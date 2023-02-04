@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  dynamodb:
+    image: amazon/dynamodb-local
+    networks:
+      - local-dynamodb
+    volumes:
+      - dynamodata:/home/dynamodblocal
+    working_dir: /home/dynamodblocal
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ."
+    ports:
+      - 8000:8000
+  todo:
+    image: public.ecr.aws/lambda/go:1
+    command: todos
+    environment:
+      - AWS_ACCESS_KEY_ID=fake
+      - AWS_SECRET_ACCESS_KEY=fake
+      - AWS_REGION=eu-west-3
+      - AWS_DYNAMODB_ENDPOINT=http://dynamodb:8000
+      # - AWS_SESSION_TOKEN (Optional)
+    networks:
+      - local-dynamodb
+    depends_on:
+      - dynamodb
+    ports:
+      - 8080:8080
+    volumes:
+      - type: bind
+        source: services/todos
+        target: /var/task
+      - extensions:/opt/extensions
+
+networks:
+  local-dynamodb:
+    name: local-dynamodb
+
+volumes:
+  dynamodata: {}
+  extensions: {}
