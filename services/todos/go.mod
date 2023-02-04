@@ -7,4 +7,7 @@ require (
 	github.com/aws/aws-sdk-go v1.44.194
 )
 
-require github.com/jmespath/go-jmespath v0.4.0 // indirect
+require (
+	github.com/jaevor/go-nanoid v1.3.0 // indirect
+	github.com/jmespath/go-jmespath v0.4.0 // indirect
+)
