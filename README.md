@@ -5,6 +5,7 @@
 ## Commands
 
 - `make build`: build the app
-- `make start`: start the application locally
-    - Depends on `build` target
-- `make curl`: calls the local AWS Lambda
+- `make start`: start DynamoDB locally
+- `make stop`: stop DynamoDB locally and remove the related data
+- `make local-get`: send the `events/get.json` locally
+- `make local-post`: send the `events/post.json` locally

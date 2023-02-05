@@ -1,12 +1,16 @@
+.PHONY: build stop start local-get
+
 build:
-	@cd services/todos; GOARCH=amd64 GOOS=linux go build .
+	sam build
 
-start: build
-	@docker compose up --remove-orphans
+stop:
+	docker compose down -v
 
-clean:
-	@rm services/todos/todos
-	@docker compose down -v
+start:
+	docker compose up -d
 
-curl:
-	@curl -XPOST "http://localhost:8080/2015-03-31/functions/function/invocations" -d '{}'
+local-get:
+	sam local invoke --region eu-west-3 --docker-network local-dynamodb -e events/get.json 
+
+local-post:
+	sam local invoke --region eu-west-3 --docker-network local-dynamodb -e events/post.json
